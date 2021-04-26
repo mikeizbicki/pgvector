@@ -104,6 +104,25 @@ ivfflatvalidate(Oid opclassoid)
 	return true;
 }
 
+static Size
+ivfflatestimateparallelscan()
+{
+	elog(INFO, "ivfflatestimateparallelscan");
+	return 0;
+}
+
+static void
+ivfflatinitparallelscan(void *target)
+{
+	elog(INFO, "ivfflatinitparallelscan");
+}
+
+static void
+ivfflatparallelrescan(IndexScanDesc scan)
+{
+	elog(INFO, "ivfflatparallelrescan");
+}
+
 PG_FUNCTION_INFO_V1(ivfflathandler);
 Datum
 ivfflathandler(PG_FUNCTION_ARGS)
@@ -127,7 +146,7 @@ ivfflathandler(PG_FUNCTION_ARGS)
 	amroutine->amclusterable = false;
 	amroutine->ampredlocks = false;
 #if PG_VERSION_NUM >= 100000
-	amroutine->amcanparallel = false;
+	amroutine->amcanparallel = true;
 #endif
 #if PG_VERSION_NUM >= 110000
 	amroutine->amcaninclude = false;
@@ -159,9 +178,9 @@ ivfflathandler(PG_FUNCTION_ARGS)
 	amroutine->ammarkpos = NULL;
 	amroutine->amrestrpos = NULL;
 #if PG_VERSION_NUM >= 100000
-	amroutine->amestimateparallelscan = NULL;
-	amroutine->aminitparallelscan = NULL;
-	amroutine->amparallelrescan = NULL;
+	amroutine->amestimateparallelscan = ivfflatestimateparallelscan;
+	amroutine->aminitparallelscan = ivfflatinitparallelscan;
+	amroutine->amparallelrescan = ivfflatparallelrescan;
 #endif
 
 	PG_RETURN_POINTER(amroutine);

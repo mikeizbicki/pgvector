@@ -66,7 +66,14 @@ ivfflatcostestimate(PlannerInfo *root, IndexPath *path, double loop_count,
 	if (ratio > 1)
 		ratio = 1;
 
+#if PG_VERSION_NUM >= 100000
+	elog(INFO, "parallel_workers = %d, loop count = %f, parallel aware = %d", path->path.parallel_workers, loop_count, path->path.parallel_aware);
+	// ratio /= path->path.parallel_workers;
+#endif
+
 	costs.indexTotalCost *= ratio;
+
+	elog(INFO, "ivfflatcostestimate = %f", costs.indexTotalCost);
 
 	/* Startup cost and total cost are same */
 	*indexStartupCost = costs.indexTotalCost;

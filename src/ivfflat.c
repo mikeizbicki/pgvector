@@ -67,11 +67,12 @@ ivfflatcostestimate(PlannerInfo *root, IndexPath *path, double loop_count,
 		ratio = 1;
 
 #if PG_VERSION_NUM >= 100000
-	elog(INFO, "parallel_workers = %d, loop count = %f, parallel aware = %d", path->path.parallel_workers, loop_count, path->path.parallel_aware);
-	// ratio /= path->path.parallel_workers;
+	// cost estimates for parallel workers applied outside of amcostestimate
+	elog(INFO, "parallel_workers = %d, parallel aware = %d", path->path.parallel_workers, path->path.parallel_aware);
 #endif
 
 	costs.indexTotalCost *= ratio;
+	costs.numIndexPages *= ratio;
 
 	elog(INFO, "ivfflatcostestimate = %f", costs.indexTotalCost);
 

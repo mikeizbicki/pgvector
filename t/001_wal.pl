@@ -21,8 +21,9 @@ sub test_index_replay
 	my $caughtup_query;
 	my $server_version_num = $node_primary->safe_psql("postgres", "SHOW server_version_num");
 	if ($server_version_num >= 100000) {
-		$caughtup_query = "SELECT pg_current_wal_lsn() <= write_lsn FROM pg_stat_replication WHERE application_name = '$applname';";
+		$caughtup_query = "SELECT pg_current_wal_lsn() <= replay_lsn FROM pg_stat_replication WHERE application_name = '$applname';";
 	} else {
+		# TODO figure out why replay location doesn't work
 		$caughtup_query = "SELECT pg_current_xlog_location() <= write_location FROM pg_stat_replication WHERE application_name = '$applname';";
 	}
 

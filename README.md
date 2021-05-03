@@ -17,7 +17,7 @@ Supports L2 distance, inner product, and cosine distance
 Compile and install the extension (supports Postgres 9.6+)
 
 ```sh
-git clone --branch v0.1.1 https://github.com/ankane/pgvector.git
+git clone --branch v0.1.2 https://github.com/ankane/pgvector.git
 cd pgvector
 make
 make install # may need sudo
@@ -135,6 +135,24 @@ vector_norm(vector) | Euclidean norm
 Libraries that use pgvector:
 
 - [Neighbor](https://github.com/ankane/neighbor) (Ruby)
+
+## Additional Installation Methods
+
+### Homebrew
+
+On Mac with Homebrew Postgres, you can use:
+
+```sh
+brew install ankane/brew/pgvector
+```
+
+## Hosted Postgres
+
+Some Postgres providers only support specific extensions. To request a new extension:
+
+- Amazon RDS - follow the instructions on [this page](https://aws.amazon.com/rds/postgresql/faqs/)
+- Google Cloud SQL - follow the instructions on [this page](https://cloud.google.com/sql/docs/postgres/extensions#requesting-support-for-a-new-extension)
+- DigitalOcean Managed Databases - follow the instructions on [this page](https://docs.digitalocean.com/products/databases/postgresql/resources/supported-extensions/#supported-extensions)
 
 ## Upgrading
 
